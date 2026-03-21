@@ -1594,31 +1594,27 @@ window.shareSlipToWhatsApp = (name) => {
     const mobile = userObj ? (userObj.mobile || '') : '';
     const month = document.getElementById('slip-month-label').textContent;
 
-    showToast("Preparing image for WhatsApp...");
+    showToast("Generating Slip & Opening Chat...");
 
     html2canvas(slip, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#f8fafc'
     }).then(canvas => {
-        canvas.toBlob(blob => {
-            const file = new File([blob], `Payout_Slip_${name.replace(/\s+/g, '_')}.png`, { type: 'image/png' });
-            
-            // Check if Web Share API supports files
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                navigator.share({
-                    files: [file],
-                    title: `SBE Payout Slip - ${name}`,
-                    text: `Monthly Payout Slip for ${name} (${month})`
-                }).catch(err => {
-                    console.error("Share failed", err);
-                    shareTextFallback(name, mobile);
-                });
-            } else {
-                // Fallback for browsers that don't support file sharing
-                showToast("Image ready — opening WhatsApp link...");
-                shareTextFallback(name, mobile);
+        canvas.toBlob(async (blob) => {
+            // Attempt to copy image to clipboard (works best on Desktop)
+            if (navigator.clipboard && navigator.clipboard.write) {
+                try {
+                    const data = [new ClipboardItem({ [blob.type]: blob })];
+                    await navigator.clipboard.write(data);
+                    showToast("Slip Image Copied! Just PASTE (Ctrl+V) in the chat.");
+                } catch (err) {
+                    console.warn("Clipboard write failed", err);
+                }
             }
+
+            // Always open the chat for the specific number
+            shareTextFallback(name, mobile);
         }, 'image/png');
     });
 };
@@ -1633,10 +1629,16 @@ const shareTextFallback = (name, mobile) => {
                     `Month: *${month}*\n\n` +
                     `✅ Total Disbursed: *${totalVol}*\n` +
                     `💰 Net Payout: *${netRev}*\n\n` +
-                    `_Check the image for detailed customer & bank revenue._`;
+                    `_Check the image for detailed customer & bank revenue. (PASTE IT HERE)_`;
 
     const encoded = encodeURIComponent(message);
-    const waUrl = mobile ? `https://wa.me/91${mobile}?text=${encoded}` : `whatsapp://send?text=${encoded}`;
+    const cleanMobile = mobile ? mobile.replace(/\D/g, '') : '';
+    
+    // Using api.whatsapp.com for more reliable direct-to-number redirect
+    const waUrl = cleanMobile 
+        ? `https://api.whatsapp.com/send?phone=91${cleanMobile}&text=${encoded}` 
+        : `https://api.whatsapp.com/send?text=${encoded}`;
+        
     window.open(waUrl, '_blank');
 };
 
