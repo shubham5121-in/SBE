@@ -1592,10 +1592,12 @@ window.shareSlipToWhatsApp = (name) => {
 
     const userObj = authorizedUsers.find(u => u.assignedName === name);
     const mobile = userObj ? (userObj.mobile || '') : '';
-    const month = document.getElementById('slip-month-label').textContent;
+    
+    // 🔥 STEP 1: Open chat IMMEDIATELY to satisfy browser pop-up rules
+    shareTextFallback(name, mobile);
+    showToast("Opening WhatsApp... capturing slip inside clipboard.");
 
-    showToast("Generating Slip & Opening Chat...");
-
+    // 🔥 STEP 2: WHILE chat opens, capture image background
     html2canvas(slip, {
         scale: 2,
         useCORS: true,
@@ -1612,9 +1614,6 @@ window.shareSlipToWhatsApp = (name) => {
                     console.warn("Clipboard write failed", err);
                 }
             }
-
-            // Always open the chat for the specific number
-            shareTextFallback(name, mobile);
         }, 'image/png');
     });
 };
@@ -2665,3 +2664,12 @@ window.testDeletePermission = async (loanId) => {
         alert("PERMISSION CHECK: ACCESS DENIED.\nReason: " + error.message + "\n\nThis confirms your Firestore Security Rules are blocking you.");
     }
 };
+
+// --- PWA SERVICE WORKER REGISTRATION ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SBE Web Service Worker registered!', reg))
+            .catch(err => console.error('Service Worker registration failed:', err));
+    });
+}

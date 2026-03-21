@@ -1,0 +1,23 @@
+{
+  "name": "SBE Web Dashboard",
+  "short_name": "SBE Web",
+  "description": "Shri Balaji Enterprises Loan Payout Management",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "360_F_204812227_fVnI2OTNSY7FYF5ZaFU5kuZjNst0kpBF-removebg-preview.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "360_F_204812227_fVnI2OTNSY7FYF5ZaFU5kuZjNst0kpBF-removebg-preview.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
