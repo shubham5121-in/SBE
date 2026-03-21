@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shri Balaji Enterprise | DSA Management</title>
+    <title>Shri Balaji Enterprise</title>
     <link rel="icon" type="image/png" href="360_F_204812227_fVnI2OTNSY7FYF5ZaFU5kuZjNst0kpBF-removebg-preview.png">
 
     <!-- Icons -->
@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- SheetJS for Excel Import -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- HTML2Canvas for Image Generating -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body class="not-logged-in">
@@ -38,12 +40,12 @@
                     <label
                         style="font-size:0.85rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.5rem; display:block;">Email
                         Address</label>
-                    <input type="email" id="login-email" class="form-control" placeholder="admin@sbe.com" required>
+                    <input type="email" id="login-email" class="form-control" placeholder="admin@sbe.com">
                 </div>
                 <div class="form-group" style="text-align:left; margin-top:1rem;">
                     <label
                         style="font-size:0.85rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.5rem; display:block;">Password</label>
-                    <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="login-password" class="form-control" placeholder="••••••••">
                 </div>
                 <button type="submit" class="btn btn-primary"
                     style="width:100%; margin-top:2rem; justify-content:center;">
@@ -79,25 +81,21 @@
                 <i class="fas fa-edit"></i>
                 <span>Daily Entry</span>
             </li>
+            <li class="nav-item" data-view="exec-files">
+                <i class="fas fa-folder-open"></i>
+                <span>Executive All Files</span>
+            </li>
             <li class="nav-item" data-view="dashboard">
                 <i class="fas fa-chart-line"></i>
                 <span>Owner Dashboard</span>
             </li>
+            <li class="nav-item" data-view="settings" id="settings-tab" style="display:none;">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </li>
         </ul>
 
-        <div id="admin-actions-sidebar"
-            style="margin-top:auto; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.1); display:none;">
-            <div class="nav-item" onclick="backupData()" style="color:var(--surface-color); opacity:0.8;">
-                <i class="fas fa-cloud-download-alt"></i>
-                <span>Backup Data</span>
-            </div>
-            <div class="nav-item" onclick="document.getElementById('restore-input').click()"
-                style="color:var(--surface-color); opacity:0.8;">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <span>Restore Data</span>
-            </div>
-            <input type="file" id="restore-input" style="display:none;" accept=".json" onchange="restoreData(this)">
-        </div>
+
 
         <div class="logout-container">
             <div class="nav-item logout-btn" id="logout-btn">

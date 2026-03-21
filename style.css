@@ -802,3 +802,23 @@ body.not-logged-in .main-content {
 body.logged-in .auth-overlay {
     display: none !important;
 }
+
+/* Debit / Credit Adjustment Badges */
+.adj-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.adj-badge-debit {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.adj-badge-credit {
+    background-color: #dcfce7;
+    color: #166534;
+}
